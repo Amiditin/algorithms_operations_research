@@ -1,0 +1,14 @@
+@import '/src/scss/_variables.scss';
+
+.layout {
+  min-height: 100vh;
+
+  .content {
+    background-color: $color-white;
+    max-width: 1240px;
+    width: 100%;
+    margin: 20px auto;
+    padding: 0 25px;
+    border-radius: 10px;
+  }
+}
