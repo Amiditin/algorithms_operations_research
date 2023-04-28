@@ -98,8 +98,56 @@ const startALgorithmBoyerMoorHorspool = (test, word) => {
   return { iteration, performance: endTime - startTime };
 };
 
+/** @type {(test: string, word: string) => { iteration: number, performance: number}} */
+const startALgorithmKnuthMorrisPratt = (test, word) => {
+  const startTime = performance.now();
+
+  let prefixFunc = [0];
+
+  for (let i = 1; i < word.length; i++) {
+    let j = prefixFunc[i - 1];
+
+    while (j > 0 && word[i] !== word[j]) {
+      j = prefixFunc[j - 1];
+    }
+
+    if (word[i] === word[j]) {
+      j += 1;
+    }
+
+    prefixFunc[i] = j;
+  }
+
+  let iteration = 0;
+  let j = 0;
+
+  for (let i = 0; i < test.length - word.length + 1; i++) {
+    iteration += 1;
+
+    while (j > 0 && test[i] !== word[j]) {
+      j = prefixFunc[j - 1];
+    }
+
+    if (test[i] === word[j]) {
+      j += 1;
+    }
+
+    if (j === word.length) {
+      const endTime = performance.now();
+
+      return { iteration, performance: endTime - startTime };
+    }
+  }
+
+  const endTime = performance.now();
+
+  return { iteration, performance: endTime - startTime };
+};
+
 for (let i = 0; i < pathsFiles.length; i++) {
   const { test, word } = getStringsForTest(pathsFiles[i].test, pathsFiles[i].word);
 
-  console.log(i, startALgorithmBoyerMoorHorspool(test || '', word || ''));
+  console.log(i, startAlgorithmNaive(test || '', word || ''));
+  // console.log(i, startALgorithmBoyerMoorHorspool(test || '', word || ''));
+  // console.log(i, startALgorithmKnuthMorrisPratt(test || '', word || ''));
 }
